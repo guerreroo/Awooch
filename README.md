@@ -1,4 +1,7 @@
 # awooch
+
+![alt text](https://raw.githubusercontent.com/guerrrero/awooch/master/src/static/static/logo.png)
+
 Awooch (форк Awoo) это маленькая текстовая борда, основанная на фреймворке Sinatra. Переведена на русский, закомментированы айдишники около поста для пущей анонимности, изменены пара досок и картинок, в общем, всего понемногу.
 
 Установка:
