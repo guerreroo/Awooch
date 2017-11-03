@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body {
+        text-align: center;
+        color: white;
+      }
+    </style>
+    <link rel="stylesheet" href="/static/awooch.css" />
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <style>
+    .comment:hover {
+      text-decoration: underline;
+    }
+    </style>
+    <script>
+      function showActions(id) {
+        if(document.getElementById("actions-" + id).style.display == "none") {
+          document.getElementById("actions-" + id).style.display = "block";
+          document.getElementById(id).innerText = ">/" + id + "/<";
+        }
+        else {
+          document.getElementById("actions-" + id).style.display = "none";
+          document.getElementById(id).innerText = "/" + id + "/";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container_login">
+      <a href="/"><img src="/static/logo.png" alt="danger/u/" id="modlogo"></a><br>
+      <span id="title" class="redtext">[Добро пожаловать <%= Sanitize.clean(session[:username]) %>]</span>
+      <br />
+      <span class="redtext">[Ваш статус: <%= allowed_capcodes(session, config)[0] %>]</span><br />
+      <% if has_permission(session, config, "introspect") %>
+        <br />
+        <a href="/introspect">&gt;Begin introspection?&lt;</a>
+        <br />
+      <% end %>
+      <span class="redtext">[Вы модерируете:]</span><br />
+      <% config["boards"].select do |board, v| session[:moderates].include? board end.each do |board, v| %>
+        <span id="<%= board %>" onClick="showActions(this.id)" class="comment">/<%= board %>/</span>
+        <div id="actions-<%= board %>" style="display: none;">
+          <% if has_permission(session, config, "edit_wordfilters") %>
+            <a href="/<%= board %>/word-filter">Edit word filters</a>
+          <% end %>
+          <% if has_permission(session, config, "edit_rules") %>
+            <a href="/<%= board %>/rules">Edit rules</a>
+          <% end %>
+          <a href="/<%= board %>/">На доску</a>
+        </div><br />
+      <% end %>
+      <br />
+      <a href="/logout" class="redtext">[Логаут]</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title>Ауч! - переместить тред <%= post %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/awooch.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+  </head>
+  <body>
+    <img src="/static/logo.png" alt="danger/u/" style="width: 395px; height: 130px;">
+    <br />
+    <div id="maincontainer" style="overflow: hidden; color: white;">
+      <div id="title">Вы собираетесь переместить тред <%= post %></div>
+      <form method="post" action="/move/<%= post %>">
+        <div class="comment">Выберите куда</div>
+        <select name="board" id="board">
+          <% boards.each do |board| %>
+            <option value="<%= board %>"><%= board %></option>
+          <% end %>
+        </select>
+        <input type='submit' name='submit' value='Переместить' class="special_styled"/>
+      </form>
+    </div>
+  </body>
+</HTML>

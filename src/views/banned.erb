@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Ауч! - Вы забанены!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="static/awooch.css">
+    <link rel="shortcut icon" href="static/favicon.ico">
+  </head>
+
+  <body>
+    <div id="sitecorner">
+      <a href="/"><img src="/static/logo.png"></a>
+      <div id="title" style="text-align: center;">Вы ЗАБАНЕНЫ!</div>
+      <img src="/static/banned.jpg" alt="banned">
+      <div class="comment" style="text-align: center;">
+        <% banned_from = "/#{Sanitize.clean(info["board"])}/" %>
+        <% banned_from = "ВСЕХ ДОСКАХ" if info["board"] == "all" %>
+        Вы забанены на <span class="redtext"><%= banned_from %></span>,
+        <br />
+        По причине: <span class="redtext"><%= Sanitize.clean(info["reason"])%></span>
+        <br />
+        Дата разбана: <span class="redtext"><%= Sanitize.clean(info["date_of_unban"])%></span>
+      </div>
+    </div>
+    <footer class="comment" style="font-size: xx-small; text-align: center;">
+      <%= config["footer"] %>, <a href="http://github.com/" style="font-size: x-small;">Ауч! <%= settings.awoo_version %></a>
+    </footer>
+  </body>
+</html>

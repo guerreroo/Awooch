@@ -1,0 +1,217 @@
+body {
+    background-color: #000000;
+}
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding-bottom: 15px;
+}
+@media only screen and (max-width: 479px) {
+    #maincontainer {
+        width: 90%;
+    }
+    #boardcontainer {
+      margin-bottom: 25px;
+    }
+}
+@font-face {
+    font-family: 'CyberpunkWaifus';
+    src: url('CyberpunkWaifus.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+a {
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-family: 'CyberpunkWaifus';
+    font-size: 20px;
+    color: #FFFFFF;
+}
+.boarda {
+    text-align: left;
+    font-size: 17px;
+    font-family: 'CyberpunkWaifus';
+    color: #FFF;
+}
+.boardb {
+    text-align: right;
+}
+#newthread {
+    font-size: 30px;
+    color: white;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'CyberpunkWaifus';
+}
+#newthread:hover {
+    text-decoration: underline;
+}
+a:hover {
+    text-decoration: underline;
+}
+.redtext {
+    color: #ED145B;
+    font-size: 18px;
+    font-family: 'CyberpunkWaifus';
+    word-wrap: break-word;
+}
+div {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#sitecorner {
+    border-radius: 25px;
+    border: 2px solid #FFFFFF;
+    padding: 20px;
+    width: 395px;
+    height: auto;
+}
+#maincontainer {
+    width: 100vw;
+    border-radius: 25px;
+    border: 2px solid #FFFFFF;
+    max-width: 568px;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+}
+textarea, #draggable > form > input[type='text'] {
+    resize: none;
+    background-color: #262626;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+#title, .title {
+    font-size: 30px;
+    color: #FFFFFF;
+    font-family: 'CyberpunkWaifus';
+    font-weight: 900;
+    padding-bottom: 15px;
+}
+.comment {
+    font-size: 18px;
+    color: #FFFFFF;
+    font-family: 'CyberpunkWaifus';
+    word-wrap: break-word;
+}
+#boardtitle {
+    text-align: center;
+    font-family: 'CyberpunkWaifus';
+    color: white;
+    font-size: 19px;
+}
+#boardcontainer {
+    text-align: center;
+    height: 20px;
+    width: auto;
+}
+#boardid {
+    display: inline;
+}
+#pagecount {
+    display: inline;
+    font-size: smaller;
+}
+#pagecount_container {
+    text-align: center;
+}
+#modlogo {
+  max-width: 395px;
+  width: auto;
+}
+#container_login {
+  text-align: center;
+}
+input[type=submit] {
+    margin-top: 3px;
+}
+
+/* moderator ban tools */
+
+.fa {
+  color: #FFF;
+}
+
+.fa:hover {
+  text-decoration: underline;
+}
+
+/* awoo version string at the bottom of each page */
+small {
+    color: white;
+}
+
+/* To offset the lock, unlock and delete buttons from the thread title */
+.fa-unlock-alt, .fa-lock, .offset-left {
+	margin-left: 6px;
+}
+input, textarea {
+  font-size: 16px;
+}
+.burg {
+  width: 50%;
+}
+.sticky-1 {
+  color: #006400; /* prefetcher green */
+}
+.sticky-2 {
+  color: #FAA757; /* rajah */
+}
+.sticky-3 {
+  color: #FF8080; /* frolly */
+}
+.sticky-4 {
+  color: #4891D9; /* havelock blue */
+}
+.sticky-5 {
+  color: #CC2E2D; /* firebrick */
+}
+.sticky-6 {
+  color: #9900FF; /* purple */
+}
+.sticky-7 {
+  color: #DB9863; /* whiskey sour */
+}
+.sticky-8 {
+  color: #6E4B2A; /* cafe royale */
+}
+.locked {
+  color: #7a7a7a;
+}
+/* Styling */
+.button_styled {
+  border: 1px solid #FFF;
+  padding: 4px;
+  color: white;
+  background-color: black;
+  font-family: 'CyberpunkWaifus';
+}
+
+.special_styled {
+  border: 1px solid #ED145B;
+  padding: 4px;
+  color: white;
+  background-color: black;
+  font-family: 'CyberpunkWaifus';
+}
+/* pre tag for rules */
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+/* new board selector style */
+hr {
+  border:none;
+  box-shadow: 0px 4px 9px #111;
+  height: 5px;
+  border-top: 1px solid #343434;
+}

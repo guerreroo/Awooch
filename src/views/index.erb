@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title><%= settings.config["title"] %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="static/awooch.css">
+    <meta name="description" content="Ауч!">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <script>
+      var ol = function ol() {
+        <%= mobile_js %>
+      }
+    </script>
+  </head>
+  <body onLoad='ol()'>
+    <img src="static/logo.png" alt="Ауч!" style="width: 395px; height: 130px;">
+    <div style="text-align: center;">
+      <span class="comment">Последние новости:</span>
+      <span class="redtext">01.11.17: АУЧ! запущен!</span>
+    </div>
+    <br>
+    <div id="maincontainer" style="overflow: hidden;"><br>
+      <div style="float: left; margin-left: 20px;">
+        <span class="redtext" style="text-decoration: underline;">Главная</span>
+        <% settings.config['boards'].select do |key, val| session[:username] or not val["hidden"] end.each do |key, array| %>
+          <a class="boarda" href="/<%= key %>"><div id="comment"><%= settings.config['boards'][key]['desc'] %></div></a>
+        <% end %><br>
+      </div>
+    </div>
+    <div style="text-align: center;">
+    </div><br>
+    <footer class="comment" style="font-size: xx-small; text-align: center;">
+      <a href="http://github.com/" style="font-size: x-small;">Ауч! <%= settings.awoo_version %></a>
+    </footer>
+  </body>
+</HTML>

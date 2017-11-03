@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Действия</title>
+    <link rel="stylesheet" type="text/css" href="/static/awooch.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  </head>
+  <body>
+    <div id="sitecorner">
+      <img src="/static/logo.png" />
+      <div id="title">Выберите, что хотите посмотреть</div>
+      <hr />
+      <br />
+      <a href="/introspect/_any">Все логи</a>
+      <br />
+      <a href="/ip/_meta">Мета логи</a>
+      <br />
+      <hr />
+      <br />
+      <% config["janitors"].each do |mod| %>
+        <% username = mod["username"] %>
+        <a href="/introspect/<%= Sanitize.clean(username) %>"><%= Sanitize.clean(username) %></a>
+        <br />
+      <% end %>
+    </div>
+  </body>
+</html>
+

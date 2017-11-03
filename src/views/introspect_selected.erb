@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Анализ <%= Sanitize.clean(mod) %></title>
+    <link rel="stylesheet" type="text/css" href="/static/awooch.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+      .entry {
+        border-left: 2px solid grey;
+        padding-left: 10px;
+      }
+    </style>
+    <script>
+      var mod = <%= JSON.dump(mod) %>;
+      var reset = function reset() {
+        var pw = prompt("Введите новый пароль: ");
+        var pw2 = prompt("Введите новый пароль: ");
+        if (pw != pw2) {
+          alert("Ошибка ввода пароля");
+          return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              alert("Пароль был изменен и все модераторы были выведены из сети для стабильной работы rerun");
+              window.location.reload();
+            } else {
+              alert("Ошибка - " + xhr.responseText);
+            }
+          }
+        }
+        xhr.open("POST", "/introspect_reset")
+        var data = new FormData();
+        data.set("newpass", pw);
+        data.set("mod", mod)
+        xhr.send(data);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="sitecorner">
+      <% ress = nil %>
+      <% if mod != "_any" then %>
+        <div id="title">Анализ <%= Sanitize.clean(mod) %></div>
+        <button onClick='reset();'>Сбросить пароль</button>
+        <br />
+        <% ress = query(con, "SELECT * FROM ip_notes WHERE actor = ? ORDER BY created DESC", mod) %>
+      <% else %>
+        <div id="title">Все логи</div>
+        <% ress = query(con, "SELECT * FROM ip_notes ORDER BY created DESC") %>
+      <% end %>
+      <% ress.each do |res| %>
+        <div style="font-size: 50%;">
+          <div class="comment">
+            <%= res["created"].strftime '%c' %><br />
+            <% if mod == "_any" then %>
+              Действующий мод: <a style="display: inline-block;" href="/introspect/<%= res["actor"] %>"><%= res["actor"] %></a><br />
+            <% end %>
+            IP вопроса: <a style="display: inline-block;" href="/ip/<%= res["ip"] %>"><%= res["ip"] %></a>
+          </div>
+        </div>
+        <div class="entry">
+          <pre class="comment"><%= Sanitize.clean(res["content"]).gsub("\n", "<br />") %></pre>
+        </div>
+        <br />
+      <% end %>
+    </div>
+  </body>
+</html>
+
+

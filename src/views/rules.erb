@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title>/<%= path %>/ - Правила</title>
+    <link rel="stylesheet" type="text/css" href="/static/awooch.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <script>
+      function editRules() {
+        document.getElementById("rules").style.display = "none";
+        document.getElementById("editor").style.display = "block";
+      }
+      var ol = function ol() {
+        <%= mobile_js %>
+      }
+    </script>
+  </head>
+
+  <body onLoad='ol()'>
+    <div id="sitecorner">
+      <img src="<%= banner %>" alt="danger/u/">
+      <div id="title" style="text-align: center;">/<%= path %>/ - Правила</div>
+      <pre class="comment" id="rules">
+<%= Sanitize.clean(rules) %>
+      </pre>
+      <% if has_permission(session, config, "edit_rules") %>
+        <form method="post" action="/<%= path %>/rules/edit" style="display:none;" id="editor">
+          <textarea style="resize: none; width: 370px; height: 230px;" name="rules"><%= rules %></textarea>
+          <input type="submit" name="submit" value="Изменить" />
+        </form>
+        <a href="#" onClick="editRules();">Изменить правила</a>
+      <% end %>
+  </div>
+  </body>
+</HTML>

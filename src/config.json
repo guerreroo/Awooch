@@ -1,0 +1,101 @@
+{
+  "title": "Ауч!",
+  "port": 8080,
+  "seconds_until_archival": 43200,
+  "footer": "Оригинал: https://github.com/dangeru, перевод и адаптация https://github.com/guerreroo",
+
+  "boards": {
+    "news": {
+      "name": "news",
+      "desc": "Новости",
+      "rules": "Правил нет!",
+      "word-filter": {
+        "стульчак": "стульчишко"
+      }
+    },
+        "all": {
+      "name": "all",
+      "desc": "all",
+      "rules": "",
+      "word-filter": {
+      }
+    },
+    "burg": {
+      "name": "burg",
+      "desc": "У тебя бург!",
+      "rules": "1. бург\n2. злой бург",
+            "hidden": true,
+
+      "word-filter": {
+        "fillerdata": "fillerdata"
+      }
+    }
+  },
+
+  "hostname": "example.com",
+  "bump_limit": 250,
+  "period_length": 30,
+  "max_posts_per_period": 4,
+
+  "janitors": [
+    {
+      "username": "tesdjfhsdfht0",
+      "password": "tasdasdest",
+      "rank": "Trial Janitor",
+      "boards": [
+        "test"
+      ]
+    },
+    {
+      "username": "tesasdadsadt",
+      "password": "tesasdsadsat",
+      "rank": "Janitor",
+      "boards": [
+        "test"
+      ]
+    },
+    {
+      "username": "tesadsadasdst2",
+      "password": "pasasdsadsads",
+      "rank": "admin",
+      "boards": [
+        "test"
+      ]
+    },
+    {
+      "username": "guerrero",
+      "password": "pasodoble123",
+      "rank": "admin",
+      "boards": [
+        "all"
+      ]
+    },
+    {
+      "username": "tesasdsasadsadt3",
+      "password": "passadsadsadss",
+      "rank": "Mod",
+      "boards": [
+        "burg"
+      ]
+    }
+  ],
+
+  "ranks": {
+    "admin": 4,
+    "Mod": 3,
+    "Janitor": 2,
+    "Trial Janitor": 1
+  },
+  "permissions": {
+    "ban": 2,
+    "delete": 1,
+    "introspect": 3,
+    "move": 1,
+    "edit_rules": 2,
+    "edit_wordfilters": 2,
+    "sticky": 2,
+    "view_all_bans": 2,
+    "view_ips": 1,
+    "lock": 1
+  }
+}

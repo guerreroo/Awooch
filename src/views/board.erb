@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>/<%= settings.config['boards'][path]['name'] %>/ - <%= settings.config['boards'][path]['desc'] %></title>
+    <style>
+    #draggable {
+      width: 320px;
+      height: auto;
+      padding: 0.5em;
+      background-color: black;
+      border: 1px solid /* black */ white;
+      text-align: center;
+      color: white;
+    }
+    textarea {
+      resize: none;
+      width: 90%;
+      height: 130px;
+    }
+    #hover {
+      position: fixed;
+      background-color: rgba(255, 255, 255, 0.6);
+      font-size: 70%;
+      border-radius: 4px;
+      padding: 4px;
+      color: black;
+      z-index: 10;
+    }
+    </style>
+    <script src="static/js/jquery-3.2.1.min.js"></script>
+    <script src="static/js/jquery-ui.min.js"></script>
+    <script>
+      var newThread = function newThread() {
+        if(document.getElementById("draggable").style.display == "none") {
+          document.getElementById("draggable").style.display = "block";
+          document.getElementById("newthread").innerHTML = "Close";
+          $( "#draggable" ).draggable({containment: "window"});
+          document.getElementById("title").style.width = document.getElementById("comment").clientWidth.toString() + "px";
+        }
+        else {
+          document.getElementById("newthread").innerHTML = "Новый пост";
+          document.getElementById("draggable").style.display = "none";
+        }
+      }
+      var ol = function ol() {
+        document.getElementById("draggable").style.display = "none";
+        document.getElementById("comment").addEventListener("keyup", function() {
+          var comment = document.getElementById("comment");
+          console.log(comment.value.length);
+          var len = (comment.value.length * 1.03) | 0;
+          var wc = document.getElementById("wordcount");
+          var submit = document.getElementById("submit");
+          wc.style.color = len > 500 ? "red" : "inherit";
+          submit.disabled = len > 500 ? true : false;
+          submit.className = len > 500 ? "special_styled" : "button_styled";
+          wc.innerText = len + "/500";
+        });
+        Array.prototype.slice.call(document.getElementsByClassName("fa"), 0).forEach(function(elem) {
+          elem.onmousemove = function(e) { move(e) }; // SHOULDN'T NEED THE WRAPPING FUNCTION BUT I DO
+          elem.onmouseover = function() {hover(elem);};
+          elem.onmouseout = function() { unhover() };
+        });
+        var hover = function(elem) {
+          var tooltip = document.getElementById("hover");
+          tooltip.style.display = "inline-block";
+          if (elem.classList.contains("fa-lock")) {
+            tooltip.innerText = "Открыть тред"
+          } else if (elem.classList.contains("fa-unlock-alt")) {
+            tooltip.innerText = "Закрыть тред"
+          } else if (elem.classList.contains("fa-ban")) {
+            tooltip.innerText = "Открепить тред"
+          } else if (elem.classList.contains("fa-trash")) {
+            tooltip.innerText = "Удалить тред"
+          } else if (elem.classList.contains("fa-refresh")) {
+            tooltip.innerText = "Переместить тред"
+          } else {
+            tooltip.innerText = "Прикрепить тред"
+          }
+          console.log(tooltip.innerText)
+        }
+        var move = function move(e) {
+          var tooltip = document.getElementById("hover");
+          tooltip.style.top = e.clientY + 5 + "px"
+          tooltip.style.left = e.clientX + 5 + "px"
+          console.log(tooltip.style.display)
+        }
+        var unhover = function() {
+          document.getElementById("hover").style.display = "none";
+        }
+        <%= mobile_js %>
+        if (typeof(unitedPropertiesIf) != "undefined" && unitedPropertiesIf.getProperty("userscript").toUpperCase() == "TRUE") {
+          var s = document.createElement("script")
+          s.src = "/static/awoo-catalog/awoo-catalog.user.js"
+          window.GM_getValue = function(a, b) {
+            res = unitedPropertiesIf.getProperty(a);
+            if (res == "") return b;
+            return a;
+          }
+          window.GM_setValue = function(a, b) {
+            unitedPropertiesIf.setProperty(a, b);
+          }
+          document.getElementsByTagName("head")[0].appendChild(s);
+        }
+      }
+    </script>
+    <script src="/static/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/awooch.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:url" content="http://<%= settings.config['hostname']%>/<%= path %>">
+    <meta property="og:title" content="/<%= settings.config['boards'][path]['name'] %>/">
+    <meta property="og:description" content="<%= settings.config['boards'][path]['desc'] %>">
+    <link rel="shortcut icon" href="../static/favicon.ico">
+  </head>
+  <body onLoad='ol();'>
+    <div id="boardcontainer">
+      <span class="boarda"><a href="/" style='display: inline-block;'><%= settings.config['title'] %></a> [</span>
+      <% settings.config['boards'].select do |key, val| session[:username] or not val["hidden"] end.each_with_index do |(key, array), index| %>
+        <a style='display: inline-block;' class="boarda" href="/<%= key %>"><%= key %></a>
+        <% minquota = 2 %>
+        <% minquota = 1 if session[:moderates] %>
+        <% unless index == settings.config['boards'].size - minquota %>
+          <span class="boarda"> / </span>
+        <% end %>
+      <% end %><span class="boarda">]</span>
+    </div><hr>
+    <div id="hover" style="display: none;"></div>
+  <div id="sitecorner" style="text-align: center;">
+    <a href="javascript:location.reload();"><img src="<%= banner %>" alt="danger/u/"></a>
+    <div id="boardtitle">/<%= settings.config['boards'][path]['name'] %>/ - <%= settings.config['boards'][path]['desc'] %></div>
+    <span onClick='newThread()' id="newthread">Новый пост</span>
+    <div id="draggable" class="ui-widget-content">
+      <form action="/post" method="post" name="newthread">
+        <% if path == "all" %>
+          Запостить в:
+          <select name="board" id="board">
+            <% config["boards"].select do |key, value| session[:username] or not value["hidden"] end.each do |key, value| %>
+              <% if key == "all" then next end %>
+              <option value="<%= key %>">
+                <%= key %> - <%= value["desc"] %>
+              </option>
+            <% end %>
+          </select>
+          <br />
+        <% else %>
+          <input style='display: none;' type='text' name='board' id='board' value='<%= path %>' />
+        <% end %>
+        <% if path == "burg" %>
+          <input style='display: none;' type='text' name='title' id='title' value='burg' />
+          <input type="radio" value="burg" id="burg" name="comment" /><label style="color: white" for="burg">бург</label><br />
+          <input type="radio" value="angry burg" id="angry_burg" name="comment" /><label style="color: white" for="angry_burg">злой бург</label><br />
+        <% else %>
+          
+          <div class="comment">Тема</div>
+          <input type="text" name="title" id="title" placeholder="Сабж" />
+          <div class="comment">Сообщение</div>
+          <textarea name="comment" id="comment"></textarea>
+          <%# Janitors of at least one board can capcode on ANY board %>
+          <% if session[:username] %>
+            <br />
+            <%= erb :capcode_dropdown, :locals => {:config => config, :session => session} %>
+            <br />
+          <% end %>
+          <div id="wordcount" class="comment" style="float: left;">0/500</div><br />
+        <% end %>
+        <input type="submit" id="submit" name="submit" class="button_styled" value="Send" style="float: right; height: 20px; line-height:0;" /><br />
+      </form>
+    </div>
+      <% if moderator and has_permission(session, config, "edit_wordfilters") %>
+        <hr />
+        <a href="/<%= path %>/word-filter">Edit word filters</a>
+      <% end %>
+    <hr />
+    <%# Note that we COULD order by `(-1 * sticky), (SELECT MAX(p2.post_id) FROM posts p2 WHERE parent = post_id)` and we wouldn't need the extra `last_bumped` database column, but it would be more cpu/disk work on the database %>
+    <% ress = nil %>
+    <% if path == "all" then %>
+      <% ress = get_all(params, session, config) %>
+    <% else %>
+      <% ress = get_board(path, params, session, config) %>
+    <% end %>
+    <% ress.each do |res| %>
+      <% classes = [] %>
+      <% if res[:is_locked] then classes.push "locked" end %>
+        <% if res[:stickyness] then
+             classes.push("sticky-" + res[:stickyness].to_s)
+             classes.delete_if do |x| x == "locked" end
+        end %>
+      <% if path == "burg" then res[:title] = "burg" end %>
+      <a style="display: inline-block;" data-replies="<%= res[:number_of_replies] %>" href="/<%= res[:board] %>/thread/<%= res[:post_id] %>" class="<%= classes.join(" ") %>">
+        <% if path == "all" then %>
+          <span style="color: grey;">/<%= res[:board] %>/</span>
+        <% end %>
+        <%= Sanitize.clean(res[:title]) %>
+      </a>
+      <% if moderator and has_permission(session, config, "lock") %>
+        <% if res[:is_locked] %>
+          <i class="fa fa-lock" aria-hidden="true" onClick='unlockPost(<%= res[:post_id] %>)'></i>
+        <% else %>
+          <i class="fa fa-unlock-alt" aria-hidden="true" onClick='lockPost(<%= res[:post_id] %>)'></i>
+        <% end %>
+      <% end %>
+      <% if moderator and has_permission(session, config, "sticky") %>
+        <%# Sticky / Unsticky post %>
+        <% if not res[:sticky] %>
+          <i class="fa fa-thumb-tack" aria-hidden="true" onClick='stickyPost(<%= res[:post_id] %>)'></i>
+        <% else %>
+          <i class="fa fa-ban" aria-hidden="true" onClick='unstickyPost(<%= res[:post_id] %>)'></i>
+        <% end %>
+      <% end %>
+      <% if moderator and has_permission(session, config, "delete") %>
+        <i class="fa fa-trash" aria-hidden="true" onClick='deletePost(<%= res[:post_id] %>)'></i>
+      <% end %>
+      <% if moderator and has_permission(session, config, "move") %>
+        <i class="fa fa-refresh" aria-hidden="true" onClick="window.location.replace('/move/<%= res[:post_id] %>');"></i>
+      <% end %>
+      <% if moderator and has_permission(session, config, "view_ips") %>
+        <a style="display: inline-block; font-size: 50%;" href="/ip/<%= res[:ip] %>"><%= res[:ip] %></a>
+      <% end %>
+      <br />
+    <% end %>
+
+    <div id="pagecount_container">
+      <% page_clause = "" %>
+      <% page_clause = "AND board = '#{con.escape(path)}'" if path != "all" %>
+      <% con.query("SELECT COUNT(*) AS count FROM posts WHERE parent IS NULL #{page_clause}").each do |res| %>
+      <% max = ((res["count"]/20)+1) %>
+      <% max = [page + 5, max].min %>
+      <% min = [0, page - 5].max %>
+      <% (min..max).each do |i| %>
+        <a href="/<%= path %>?page=<%= i.to_s %>" id="pagecount"><%= (i + 1).to_s %></a>
+      <% end end %>
+    </div>
+  </div>
+  <footer class="comment" style="font-size: xx-small; text-align: center;">
+      <%= config["footer"] %>, <a href="http://github.com/" style="font-size: x-small;">Ауч! <%= settings.awoo_version %></a>
+  </footer>
+  </body>
+</html>
